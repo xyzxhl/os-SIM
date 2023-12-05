@@ -1,0 +1,22 @@
+#pragma once
+
+enum class ComState
+{
+    ACCEPT_REQ = 255,
+    SUCCESS_RECV = 254,
+    TASK_END = 253,
+    UPLOAD_FILE = 252,
+    DOWNLOAD_FILE = 251,
+    LOGIN = 250,
+    ADMINISTRATOR = 249,
+    TEACHER = 248,
+    STUDENT = 247,
+    ERROR = 246,
+    PRINT_COURSE = 245,
+    PRINT_MEMBER = 244,
+    ADD_USER = 243,
+    DELETE_USER = 242,
+    ADD_COURSE = 241,
+    DELETE_COURSE = 240,
+    EXIT = 239
+};
