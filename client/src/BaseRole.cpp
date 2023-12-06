@@ -8,10 +8,17 @@ SIM::SIM(FileSystem *fileSystem, Client *client)
       cli(client),
       role(Role::Unknown)
 {
-    options.push_back(make_pair("Login", &SIM::Login));
     options.push_back(make_pair("Exit", &SIM::Exit));
     options.push_back(make_pair("PrintCourse", &SIM::PrintCourse));
     options.push_back(make_pair("PrintMember", &SIM::PrintMember));
+}
+
+void SIM::AskAndSend(string q)
+{
+    string ss;
+    cout << q << ":";
+    cin >> ss;
+    cli->Send(ss);
 }
 
 void SIM::Interact()
@@ -35,7 +42,7 @@ void SIM::Interact()
         break;
 
     default:
-        cerr << "Fail to login" << endl;
+        cerr << "Failed to login" << endl;
         break;
     }
 
@@ -48,7 +55,8 @@ void SIM::Interact()
         }
         string opt;
         cin >> opt;
-        for (int i = 0; i < options.size(); i++)
+        int i = 0;
+        for (; i < options.size(); i++)
         {
             if (opt == options[i].first)
             {
@@ -56,7 +64,8 @@ void SIM::Interact()
                 break;
             }
         }
-        cout << "Invalid action." << endl;
+        if (i == options.size())
+            cout << "Invalid action." << endl;
     }
 
     cli->Disconnect();
@@ -70,26 +79,29 @@ void SIM::Login()
     if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
         SEND_ERROR_AND_END
 
-    ASK_AND_SEND(username)
+    AskAndSend("username");
 
     if (ComState(cli->Receive()[0]) != ComState::SUCCESS_RECV)
         SEND_ERROR_AND_END
 
-    ASK_AND_SEND(password)
+    AskAndSend("password");
 
     ComState opt = ComState(cli->Receive()[0]);
     switch (opt)
     {
     case ComState::ADMINISTRATOR:
         role = Role::Administrator;
+        AddOptions_A();
         break;
 
     case ComState::TEACHER:
         role = Role::Teacher;
+        AddOptions_T();
         break;
 
     case ComState::STUDENT:
         role = Role::Student;
+        AddOptions_S();
         break;
 
     default:
@@ -102,12 +114,12 @@ void SIM::Login()
 
 void SIM::Exit()
 {
-
     cli->Send(ComState::EXIT);
 
     if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
         SEND_ERROR_AND_END
 
+    online = false;
     cli->Send(ComState::TASK_END);
 }
 

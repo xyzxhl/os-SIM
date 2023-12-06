@@ -29,6 +29,19 @@ public:
     void AddCourse();
     void DeleteCourse();
 
+    void ReleaseAssignment();
+    void PrintSubmittedHomework();
+    void ReceiveHomework();
+    void MarkHomework();
+
+    void PrintAssignmentTitle();
+    void PrintAssignmentContent();
+    void SubmitHomework();
+    void PrintScore();
+
+    void Backup();
+    void Recovery();
+
 private:
     Database *database;
     Server *server;

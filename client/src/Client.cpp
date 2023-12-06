@@ -59,20 +59,19 @@ void Client::Disconnect()
     }
 }
 
-void Client::Send(ComState state, string content)
+void Client::Send(string content)
 {
-    if (content.size() >= 1023)
-    {
-        cerr << "Buffer can not contain data." << endl;
-        return;
-    }
-    content.push_back(char(state));
     const char *message = content.data();
     ssize_t bytesSent = send(clientSocket, message, strlen(message), 0);
     if (bytesSent == -1)
     {
         cerr << "Failed to send data to server." << endl;
     }
+}
+
+void Client::Send(ComState state)
+{
+    Send(string(1, char(state)));
 }
 
 string Client::Receive()

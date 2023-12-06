@@ -21,12 +21,12 @@ void SIM::AddUser()
     if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
         SEND_ERROR_AND_END
 
-    ASK_AND_SEND(username)
+    AskAndSend("username");
 
     if (ComState(cli->Receive()[0]) != ComState::SUCCESS_RECV)
         SEND_ERROR_AND_END
 
-    ASK_AND_SEND(password)
+    AskAndSend("password");
 
     if (ComState(cli->Receive()[0]) != ComState::SUCCESS_RECV)
         SEND_ERROR_AND_END
@@ -66,7 +66,7 @@ void SIM::DeleteUser()
     if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
         SEND_ERROR_AND_END
 
-    ASK_AND_SEND(username)
+    AskAndSend("username");
 
     if (ComState(cli->Receive()[0]) != ComState::SUCCESS_RECV)
         SEND_ERROR_AND_END
@@ -81,7 +81,7 @@ void SIM::AddCourse()
     if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
         SEND_ERROR_AND_END
 
-    ASK_AND_SEND(course name)
+    AskAndSend("course name");
 
     if (ComState(cli->Receive()[0]) != ComState::SUCCESS_RECV)
         SEND_ERROR_AND_END
@@ -96,7 +96,7 @@ void SIM::DeleteCourse()
     if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
         SEND_ERROR_AND_END
 
-    ASK_AND_SEND(course name)
+    AskAndSend("course name");
 
     if (ComState(cli->Receive()[0]) != ComState::SUCCESS_RECV)
         SEND_ERROR_AND_END

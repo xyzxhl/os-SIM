@@ -13,14 +13,6 @@
         return;                     \
     }
 
-#define ASK_AND_SEND(q)    \
-    {                      \
-        string ss;         \
-        cout << #q << ":"; \
-        cin >> ss;         \
-        cli->Send(ss);     \
-    }
-
 enum class Role
 {
     Unknown,
@@ -37,6 +29,13 @@ public:
     void Interact();
 
 private:
+    // Utility
+    void AskAndSend(std::string);
+
+    void AddOptions_T();
+    void AddOptions_S();
+    void AddOptions_A();
+
     // BaseRole
     void Login();
     void Exit();
@@ -51,24 +50,18 @@ private:
     */
 
     // Teacher
-    void AddOptions_T();
-
-    void AssignHomework();
-    void PrintReceivedHomework();
+    void ReleaseAssignment();
+    void PrintSubmittedHomework();
     void ReceiveHomework();
     void MarkHomework();
 
     // Student
-    void AddOptions_S();
-
-    void PrintTitle();
-    void GetHomework();
+    void PrintAssignmentTitle();
+    void PrintAssignmentContent();
     void SubmitHomework();
-    void GetScore();
+    void PrintScore();
 
     // Administrator
-    void AddOptions_A();
-
     void AddUser();
     void DeleteUser();
     void AddCourse();

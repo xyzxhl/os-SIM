@@ -51,6 +51,46 @@ void Handler::Handle()
             DeleteCourse();
             break;
 
+        case ComState::RELEASE_ASSIGNMENT:
+            ReleaseAssignment();
+            break;
+
+        case ComState::PRINT_SUBMITTED_HOMEWORK:
+            PrintSubmittedHomework();
+            break;
+
+        case ComState::RECEIVE_HOMEWORK:
+            ReceiveHomework();
+            break;
+
+        case ComState::MARK_HOMEWORK:
+            MarkHomework();
+            break;
+
+        case ComState::PRINT_ASSIGNMENT_TITLE:
+            PrintAssignmentTitle();
+            break;
+
+        case ComState::PRINT_ASSIGNMENT_CONTENT:
+            PrintAssignmentContent();
+            break;
+
+        case ComState::SUBMIT_HOMEWORK:
+            SubmitHomework();
+            break;
+
+        case ComState::PRINT_SCORE:
+            PrintScore();
+            break;
+
+        case ComState::BACKUP:
+            Backup();
+            break;
+
+        case ComState::RECOVERY:
+            Recovery();
+            break;
+
         default:
             break;
         }
@@ -95,11 +135,23 @@ void Handler::Exit()
 void Handler::PrintCourse()
 {
     server->Send(ComState::ACCEPT_REQ, clientSocket);
+
+    if (ComState(server->Receive(clientSocket)[0]) != ComState::SUCCESS_RECV)
+        SEND_ERROR_AND_END
+
+    string content = database->PrintCourse();
+    server->Send(content, clientSocket);
 }
 
 void Handler::PrintMember()
 {
     server->Send(ComState::ACCEPT_REQ, clientSocket);
+
+    if (ComState(server->Receive(clientSocket)[0]) != ComState::SUCCESS_RECV)
+        SEND_ERROR_AND_END
+
+    string content = database->PrintMember();
+    server->Send(content, clientSocket);
 }
 
 void Handler::AddUser()
@@ -160,4 +212,54 @@ void Handler::DeleteCourse()
 
     database->DeleteCourse(username);
     server->Send(ComState::SUCCESS_RECV, clientSocket);
+}
+
+void Handler::ReleaseAssignment()
+{
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
+}
+
+void Handler::PrintSubmittedHomework()
+{
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
+}
+
+void Handler::ReceiveHomework()
+{
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
+}
+
+void Handler::MarkHomework()
+{
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
+}
+
+void Handler::PrintAssignmentTitle()
+{
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
+}
+
+void Handler::PrintAssignmentContent()
+{
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
+}
+
+void Handler::SubmitHomework()
+{
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
+}
+
+void Handler::PrintScore()
+{
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
+}
+
+void Handler::Backup()
+{
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
+}
+
+void Handler::Recovery()
+{
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
 }
