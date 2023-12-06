@@ -106,7 +106,7 @@ void FileSystem::DeleteFile_k2(int InodeIdx)
 int FileSystem::Create_k2(string path, bool bIsDir)
 {
     vector<string> epath = ProcessDir(path);
-    if (epath.back().size() >= MAX_FILENAME_LENGTH)
+    if (epath.back().size() >= MAX_FILENAME_LENGTH || epath.back().size() == 0)
         return 0;
 
     int InodeIdx = SearchParentInode(epath);

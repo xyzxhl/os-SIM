@@ -3,6 +3,39 @@
 #include "../../common/include/FileSystem.h"
 #include "../../common/include/ComState.h"
 
+/*
+File Structure:
+(root)
+|
+|---User
+|   |-username1
+|   |   └-password(role is in this file)
+|   |-username2
+|   |   └-password
+|   ...
+|
+└---Course
+    |-course_name1
+    |   |-assignment1
+    |   |   |-Content
+    |   |   └-Homework
+    |   |       |-title1
+    |   |       |   |-Score
+    |   |       |   └-Content
+    |   |       |-title2
+    |   |       |   |-Score
+    |   |       |   └-Content
+    |   |       ...
+    |   |
+    |   |-assignment2
+    |   |   └-...
+    |   ...
+    |
+    |-course_name2
+    |   └-...
+    ...
+
+*/
 class Database
 {
 public:

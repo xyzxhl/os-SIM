@@ -109,14 +109,9 @@ void Handler::Login()
     server->Send(ComState::ACCEPT_REQ, clientSocket);
 
     string username = server->Receive(clientSocket);
-    if (username == "")
-        SEND_ERROR_AND_END
-
     server->Send(ComState::SUCCESS_RECV, clientSocket);
 
     string password = server->Receive(clientSocket);
-    if (password == "")
-        SEND_ERROR_AND_END
 
     ComState role = database->CheckLogin(username, password);
     if (role == ComState::ERROR)
@@ -159,23 +154,17 @@ void Handler::AddUser()
     server->Send(ComState::ACCEPT_REQ, clientSocket);
 
     string username = server->Receive(clientSocket);
-    if (username == "")
-        SEND_ERROR_AND_END
-
     server->Send(ComState::SUCCESS_RECV, clientSocket);
 
     string password = server->Receive(clientSocket);
-    if (password == "")
-        SEND_ERROR_AND_END
-
     server->Send(ComState::SUCCESS_RECV, clientSocket);
 
     ComState role = ComState(server->Receive(clientSocket)[0]);
     if (role == ComState::ERROR)
         SEND_ERROR_AND_END
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
 
     database->AddUser(username, password, role);
-    server->Send(ComState::SUCCESS_RECV, clientSocket);
 }
 
 void Handler::DeleteUser()
@@ -183,11 +172,9 @@ void Handler::DeleteUser()
     server->Send(ComState::ACCEPT_REQ, clientSocket);
 
     string username = server->Receive(clientSocket);
-    if (username == "")
-        SEND_ERROR_AND_END
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
 
     database->DeleteUser(username);
-    server->Send(ComState::SUCCESS_RECV, clientSocket);
 }
 
 void Handler::AddCourse()
@@ -195,11 +182,9 @@ void Handler::AddCourse()
     server->Send(ComState::ACCEPT_REQ, clientSocket);
 
     string username = server->Receive(clientSocket);
-    if (username == "")
-        SEND_ERROR_AND_END
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
 
     database->AddCourse(username);
-    server->Send(ComState::SUCCESS_RECV, clientSocket);
 }
 
 void Handler::DeleteCourse()
@@ -207,21 +192,41 @@ void Handler::DeleteCourse()
     server->Send(ComState::ACCEPT_REQ, clientSocket);
 
     string username = server->Receive(clientSocket);
-    if (username == "")
-        SEND_ERROR_AND_END
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
 
     database->DeleteCourse(username);
-    server->Send(ComState::SUCCESS_RECV, clientSocket);
 }
 
 void Handler::ReleaseAssignment()
 {
     server->Send(ComState::ACCEPT_REQ, clientSocket);
+
+    string courseName = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string assignment = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string content = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    database->ReleaseAssignment(courseName, assignment, content);
 }
 
 void Handler::PrintSubmittedHomework()
 {
     server->Send(ComState::ACCEPT_REQ, clientSocket);
+
+    string courseName = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string assignment = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    if (ComState(server->Receive(clientSocket)[0]) != ComState::SUCCESS_RECV)
+        SEND_ERROR_AND_END
+    string content = database->PrintSubmittedHomework(courseName, assignment);
+    server->Send(content, clientSocket);
 }
 
 void Handler::ReceiveHomework()

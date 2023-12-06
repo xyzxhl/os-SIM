@@ -75,17 +75,14 @@ void SIM::Interact()
 void SIM::Login()
 {
     cli->Send(ComState::LOGIN);
-
     if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
         SEND_ERROR_AND_END
 
     AskAndSend("username");
-
     if (ComState(cli->Receive()[0]) != ComState::SUCCESS_RECV)
         SEND_ERROR_AND_END
 
     AskAndSend("password");
-
     ComState opt = ComState(cli->Receive()[0]);
     switch (opt)
     {
@@ -115,7 +112,6 @@ void SIM::Login()
 void SIM::Exit()
 {
     cli->Send(ComState::EXIT);
-
     if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
         SEND_ERROR_AND_END
 
@@ -126,12 +122,10 @@ void SIM::Exit()
 void SIM::PrintCourse()
 {
     cli->Send(ComState::PRINT_COURSE);
-
     if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
         SEND_ERROR_AND_END
 
     cli->Send(ComState::SUCCESS_RECV);
-
     cout << cli->Receive();
 
     cli->Send(ComState::TASK_END);
@@ -140,12 +134,10 @@ void SIM::PrintCourse()
 void SIM::PrintMember()
 {
     cli->Send(ComState::PRINT_MEMBER);
-
     if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
         SEND_ERROR_AND_END
 
     cli->Send(ComState::SUCCESS_RECV);
-
     cout << cli->Receive();
 
     cli->Send(ComState::TASK_END);
