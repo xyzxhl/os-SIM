@@ -1,22 +1,24 @@
-#include "../include/Role.h"
-#include "../../common/include/ComState.h"
+#include "../include/SIM.h"
+#include <iostream>
 
-void Teacher::AssignHomework(std::string courseName, std::string title, std::string path)
+using namespace std;
+
+void SIM::AddOptions_T()
 {
 }
 
-void Teacher::PrintReceivedHomework(std::string courseName, std::string title)
+void SIM::AssignHomework()
 {
 }
 
-void Teacher::ReceiveHomework(std::string courseName, std::string title)
+void SIM::PrintReceivedHomework()
 {
 }
 
-void Teacher::MarkHomework(std::string courseName, std::string title, std::string studentName, int score)
+void SIM::ReceiveHomework()
 {
 }
 
-void Teacher::Interact()
+void SIM::MarkHomework()
 {
 }

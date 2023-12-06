@@ -1,122 +1,140 @@
-#include "../include/Role.h"
-#include "../../common/include/ComState.h"
+#include "../include/SIM.h"
 #include "iostream"
 
 using namespace std;
 
-BaseRole::BaseRole(FileSystem *fileSystem, Client *client)
+SIM::SIM(FileSystem *fileSystem, Client *client)
     : fileSys(fileSystem),
-      cli(client)
+      cli(client),
+      role(Role::Unknown)
 {
+    options.push_back(make_pair("Login", &SIM::Login));
+    options.push_back(make_pair("Exit", &SIM::Exit));
+    options.push_back(make_pair("PrintCourse", &SIM::PrintCourse));
+    options.push_back(make_pair("PrintMember", &SIM::PrintMember));
 }
 
-Role BaseRole::Login(string username, string password)
+void SIM::Interact()
 {
+    online = true;
     cli->Connect();
 
-    cli->Send(ComState::LOGIN);
-
-    if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
+    Login();
+    switch (role)
     {
-        SendError();
-        return Role::Unknown;
-    }
-
-    cli->Send(username);
-
-    if (ComState(cli->Receive()[0]) != ComState::SUCCESS_RECV)
-    {
-        SendError();
-        return Role::Unknown;
-    }
-
-    cli->Send(password);
-
-    ComState opt = ComState(cli->Receive()[0]);
-    Role res;
-    switch (opt)
-    {
-    case ComState::ADMINISTRATOR:
-        res = Role::Administrator;
+    case Role::Administrator:
+        cout << "Successfully Login in. Welcome, administrator." << endl;
         break;
 
-    case ComState::TEACHER:
-        res = Role::Teacher;
+    case Role::Student:
+        cout << "Successfully Login in. Welcome, student." << endl;
         break;
 
-    case ComState::STUDENT:
-        res = Role::Student;
+    case Role::Teacher:
+        cout << "Successfully Login in. Welcome, teacher." << endl;
         break;
 
     default:
-        SendError();
-        res = Role::Unknown;
-        return res;
+        cerr << "Fail to login" << endl;
+        break;
     }
 
-    SendEnd();
-
-    return res;
-}
-
-void BaseRole::Interact()
-{
-    online = true;
     while (online)
     {
+        cout << "These are all optional actions, please choose from them:" << endl;
+        for (int i = 0; i < options.size(); i++)
+        {
+            cout << options[i].first << endl;
+        }
+        string opt;
+        cin >> opt;
+        for (int i = 0; i < options.size(); i++)
+        {
+            if (opt == options[i].first)
+            {
+                (this->*(options[i].second))();
+                break;
+            }
+        }
+        cout << "Invalid action." << endl;
     }
+
+    cli->Disconnect();
+    cout << "Successfully disconnect." << endl;
 }
 
-void BaseRole::Exit()
+void SIM::Login()
+{
+    cli->Send(ComState::LOGIN);
+
+    if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
+        SEND_ERROR_AND_END
+
+    ASK_AND_SEND(username)
+
+    if (ComState(cli->Receive()[0]) != ComState::SUCCESS_RECV)
+        SEND_ERROR_AND_END
+
+    ASK_AND_SEND(password)
+
+    ComState opt = ComState(cli->Receive()[0]);
+    switch (opt)
+    {
+    case ComState::ADMINISTRATOR:
+        role = Role::Administrator;
+        break;
+
+    case ComState::TEACHER:
+        role = Role::Teacher;
+        break;
+
+    case ComState::STUDENT:
+        role = Role::Student;
+        break;
+
+    default:
+        role = Role::Unknown;
+        SEND_ERROR_AND_END
+    }
+
+    cli->Send(ComState::TASK_END);
+}
+
+void SIM::Exit()
 {
 
     cli->Send(ComState::EXIT);
 
     if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
-    {
-        cout << "Fail to send request.";
-        SendError();
-        cli->Disconnect();
-        return;
-    }
+        SEND_ERROR_AND_END
 
-    SendEnd();
-    cli->Disconnect();
-    cout << "Successfully disconnect." << endl;
+    cli->Send(ComState::TASK_END);
 }
 
-void BaseRole::PrintCourse()
+void SIM::PrintCourse()
 {
     cli->Send(ComState::PRINT_COURSE);
 
     if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
-    {
-        cout << "Fail to send request.";
-        SendError();
-        return;
-    }
+        SEND_ERROR_AND_END
 
     cli->Send(ComState::SUCCESS_RECV);
 
     cout << cli->Receive();
 
-    SendEnd();
+    cli->Send(ComState::TASK_END);
 }
 
-void BaseRole::PrintMember()
+void SIM::PrintMember()
 {
     cli->Send(ComState::PRINT_MEMBER);
 
     if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
-    {
-        cout << "Fail to send request.";
-        SendError();
-        return;
-    }
+        SEND_ERROR_AND_END
 
     cli->Send(ComState::SUCCESS_RECV);
 
     cout << cli->Receive();
 
-    SendEnd();
+    cli->Send(ComState::TASK_END);
 }

@@ -1,6 +1,5 @@
 #include "../include/Server.h"
 #include "../include/Handler.h"
-#include "../../common/include/ComState.h"
 #include <iostream>
 #include <sys/socket.h>
 #include <sys/time.h>

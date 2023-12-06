@@ -1,22 +1,25 @@
-#include "../include/Role.h"
+#include "../include/SIM.h"
 #include "../../common/include/ComState.h"
+#include <iostream>
 
-void Student::PrintTitle(std::string courseName)
+using namespace std;
+
+void SIM::AddOptions_S()
 {
 }
 
-void Student::GetHomework(std::string courseName, std::string title)
+void SIM::PrintTitle()
 {
 }
 
-void Student::SubmitHomework(std::string courseName, std::string title, std::string path)
+void SIM::GetHomework()
 {
 }
 
-void Student::GetScore(std::string courseName, std::string title)
+void SIM::SubmitHomework()
 {
 }
 
-void Student::Interact()
+void SIM::GetScore()
 {
 }

@@ -3,20 +3,18 @@
 #include "Database.h"
 #include "Server.h"
 
+#define SEND_ERROR_AND_END                           \
+    {                                                \
+        server->Send(ComState::ERROR, clientSocket); \
+        online = false;                              \
+        return;                                      \
+    }
+
 class Handler
 {
 public:
     Handler(Database *db, Server *ser, int cliSocket);
 
-private:
-    void SendAccept() { server->Send(ComState::ACCEPT_REQ, clientSocket); }
-    void SendError()
-    {
-        server->Send(ComState::ERROR, clientSocket);
-        online = false;
-    }
-
-public:
     void Handle();
 
     void Login();

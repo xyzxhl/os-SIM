@@ -1,5 +1,4 @@
 #include "../include/Handler.h"
-#include "../../common/include/ComState.h"
 #include <iostream>
 #include <string>
 
@@ -56,39 +55,32 @@ void Handler::Handle()
             break;
         }
 
-        if (ComState(server->Receive(clientSocket)[0]) != ComState::TASK_END)
-        {
-            cerr << "Failed to operate " << int(opt) << " in " << clientSocket << endl;
-        }
+        if (online)
+            if (ComState(server->Receive(clientSocket)[0]) != ComState::TASK_END)
+            {
+                online = false;
+                cerr << "Failed to operate " << int(opt) << " in " << clientSocket << endl;
+            }
     }
 }
 
 void Handler::Login()
 {
-    SendAccept();
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
 
     string username = server->Receive(clientSocket);
     if (username == "")
-    {
-        SendError();
-        return;
-    }
+        SEND_ERROR_AND_END
 
     server->Send(ComState::SUCCESS_RECV, clientSocket);
 
     string password = server->Receive(clientSocket);
     if (password == "")
-    {
-        SendError();
-        return;
-    }
+        SEND_ERROR_AND_END
 
     ComState role = database->CheckLogin(username, password);
     if (role == ComState::ERROR)
-    {
-        SendError();
-        return;
-    }
+        SEND_ERROR_AND_END
 
     cout << "Login in: " << username << endl;
     server->Send(role, clientSocket);
@@ -96,48 +88,39 @@ void Handler::Login()
 
 void Handler::Exit()
 {
-    SendAccept();
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
     online = false;
 }
 
 void Handler::PrintCourse()
 {
-    SendAccept();
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
 }
 
 void Handler::PrintMember()
 {
-    SendAccept();
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
 }
 
 void Handler::AddUser()
 {
-    SendAccept();
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
 
     string username = server->Receive(clientSocket);
     if (username == "")
-    {
-        SendError();
-        return;
-    }
+        SEND_ERROR_AND_END
 
     server->Send(ComState::SUCCESS_RECV, clientSocket);
 
     string password = server->Receive(clientSocket);
     if (password == "")
-    {
-        SendError();
-        return;
-    }
+        SEND_ERROR_AND_END
 
     server->Send(ComState::SUCCESS_RECV, clientSocket);
 
     ComState role = ComState(server->Receive(clientSocket)[0]);
     if (role == ComState::ERROR)
-    {
-        SendError();
-        return;
-    }
+        SEND_ERROR_AND_END
 
     database->AddUser(username, password, role);
     server->Send(ComState::SUCCESS_RECV, clientSocket);
@@ -145,14 +128,11 @@ void Handler::AddUser()
 
 void Handler::DeleteUser()
 {
-    SendAccept();
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
 
     string username = server->Receive(clientSocket);
     if (username == "")
-    {
-        SendError();
-        return;
-    }
+        SEND_ERROR_AND_END
 
     database->DeleteUser(username);
     server->Send(ComState::SUCCESS_RECV, clientSocket);
@@ -160,14 +140,11 @@ void Handler::DeleteUser()
 
 void Handler::AddCourse()
 {
-    SendAccept();
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
 
     string username = server->Receive(clientSocket);
     if (username == "")
-    {
-        SendError();
-        return;
-    }
+        SEND_ERROR_AND_END
 
     database->AddCourse(username);
     server->Send(ComState::SUCCESS_RECV, clientSocket);
@@ -175,14 +152,11 @@ void Handler::AddCourse()
 
 void Handler::DeleteCourse()
 {
-    SendAccept();
+    server->Send(ComState::ACCEPT_REQ, clientSocket);
 
     string username = server->Receive(clientSocket);
     if (username == "")
-    {
-        SendError();
-        return;
-    }
+        SEND_ERROR_AND_END
 
     database->DeleteCourse(username);
     server->Send(ComState::SUCCESS_RECV, clientSocket);
