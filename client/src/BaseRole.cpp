@@ -48,6 +48,8 @@ void SIM::Interact()
 
     while (online)
     {
+        cout << "Press Enter to continue.";
+        cin.get();
         cout << "These are all optional actions, please choose from them:" << endl;
         for (int i = 0; i < options.size(); i++)
         {
