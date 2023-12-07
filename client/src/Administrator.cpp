@@ -8,10 +8,12 @@ void SIM::AddOptions_A()
     AddOptions_S();
     AddOptions_T();
 
-    options.push_back(make_pair("AddUser", &SIM::AddUser));
-    options.push_back(make_pair("DeleteUser", &SIM::DeleteUser));
-    options.push_back(make_pair("AddCourse", &SIM::AddCourse));
-    options.push_back(make_pair("DeleteCourse", &SIM::DeleteCourse));
+    ADD_OPTION(AddUser)
+    ADD_OPTION(DeleteUser)
+    ADD_OPTION(AddCourse)
+    ADD_OPTION(DeleteCourse)
+    ADD_OPTION(Backup)
+    ADD_OPTION(Recovery)
 }
 
 void SIM::AddUser()
@@ -89,6 +91,24 @@ void SIM::DeleteCourse()
 
     AskAndSend("course name");
     if (ComState(cli->Receive()[0]) != ComState::SUCCESS_RECV)
+        SEND_ERROR_AND_END
+
+    cli->Send(ComState::TASK_END);
+}
+
+void SIM::Backup()
+{
+    cli->Send(ComState::BACKUP);
+    if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
+        SEND_ERROR_AND_END
+
+    cli->Send(ComState::TASK_END);
+}
+
+void SIM::Recovery()
+{
+    cli->Send(ComState::RECOVERY);
+    if (ComState(cli->Receive()[0]) != ComState::ACCEPT_REQ)
         SEND_ERROR_AND_END
 
     cli->Send(ComState::TASK_END);

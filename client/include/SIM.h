@@ -13,6 +13,8 @@
         return;                     \
     }
 
+#define ADD_OPTION(opt) options.push_back(make_pair(#opt, &SIM::opt));
+
 enum class Role
 {
     Unknown,

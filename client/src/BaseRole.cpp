@@ -8,9 +8,9 @@ SIM::SIM(FileSystem *fileSystem, Client *client)
       cli(client),
       role(Role::Unknown)
 {
-    options.push_back(make_pair("Exit", &SIM::Exit));
-    options.push_back(make_pair("PrintCourse", &SIM::PrintCourse));
-    options.push_back(make_pair("PrintMember", &SIM::PrintMember));
+    ADD_OPTION(Exit)
+    ADD_OPTION(PrintCourse)
+    ADD_OPTION(PrintMember)
 }
 
 void SIM::AskAndSend(string q)

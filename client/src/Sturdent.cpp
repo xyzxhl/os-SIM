@@ -5,10 +5,10 @@ using namespace std;
 
 void SIM::AddOptions_S()
 {
-    options.push_back(make_pair("PrintAssignmentTitle", &SIM::PrintAssignmentTitle));
-    options.push_back(make_pair("PrintTitle", &SIM::DeleteUser));
-    options.push_back(make_pair("SubmitHomework", &SIM::SubmitHomework));
-    options.push_back(make_pair("PrintScore", &SIM::PrintScore));
+    ADD_OPTION(PrintAssignmentTitle)
+    ADD_OPTION(DeleteUser)
+    ADD_OPTION(SubmitHomework)
+    ADD_OPTION(PrintScore)
 }
 
 void SIM::PrintAssignmentTitle()

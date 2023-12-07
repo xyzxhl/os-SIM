@@ -221,10 +221,6 @@ void Handler::PrintSubmittedHomework()
     server->Send(ComState::SUCCESS_RECV, clientSocket);
 
     string assignment = server->Receive(clientSocket);
-    server->Send(ComState::SUCCESS_RECV, clientSocket);
-
-    if (ComState(server->Receive(clientSocket)[0]) != ComState::SUCCESS_RECV)
-        SEND_ERROR_AND_END
     string content = database->PrintSubmittedHomework(courseName, assignment);
     server->Send(content, clientSocket);
 }
@@ -232,39 +228,100 @@ void Handler::PrintSubmittedHomework()
 void Handler::ReceiveHomework()
 {
     server->Send(ComState::ACCEPT_REQ, clientSocket);
+
+    string courseName = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string assignment = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string title = server->Receive(clientSocket);
+    string content = database->ReceiveHomework(courseName, assignment, title);
+    server->Send(content, clientSocket);
 }
 
 void Handler::MarkHomework()
 {
     server->Send(ComState::ACCEPT_REQ, clientSocket);
+
+    string courseName = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string assignment = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string title = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string score = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    database->MarkHomework(courseName, assignment, title, score);
 }
 
 void Handler::PrintAssignmentTitle()
 {
     server->Send(ComState::ACCEPT_REQ, clientSocket);
+
+    string courseName = server->Receive(clientSocket);
+    string content = database->PrintAssignmentTitle(courseName);
+    server->Send(content, clientSocket);
 }
 
 void Handler::PrintAssignmentContent()
 {
     server->Send(ComState::ACCEPT_REQ, clientSocket);
+
+    string courseName = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string assignment = server->Receive(clientSocket);
+    string content = database->PrintAssignmentContent(courseName, assignment);
+    server->Send(content, clientSocket);
 }
 
 void Handler::SubmitHomework()
 {
     server->Send(ComState::ACCEPT_REQ, clientSocket);
+
+    string courseName = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string assignment = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string title = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string content = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    database->SubmitHomework(courseName, assignment, title, content);
 }
 
 void Handler::PrintScore()
 {
     server->Send(ComState::ACCEPT_REQ, clientSocket);
+
+    string courseName = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string assignment = server->Receive(clientSocket);
+    server->Send(ComState::SUCCESS_RECV, clientSocket);
+
+    string title = server->Receive(clientSocket);
+    string content = database->PrintScore(courseName, assignment, title);
+    server->Send(content, clientSocket);
 }
 
 void Handler::Backup()
 {
     server->Send(ComState::ACCEPT_REQ, clientSocket);
+    database->Backup();
 }
 
 void Handler::Recovery()
 {
     server->Send(ComState::ACCEPT_REQ, clientSocket);
+    database->Recovery();
 }
