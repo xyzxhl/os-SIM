@@ -160,8 +160,14 @@ void Database::Backup()
 {
     fileSys.Delete("Backup");
     fileSys.CreateDirectory("Backup");
+    fileSys.Copy("User", "Backup");
+    fileSys.Copy("Course", "Backup");
 }
 
 void Database::Recovery()
 {
+    fileSys.Delete("User");
+    fileSys.Delete("Course");
+    fileSys.Copy("Backup/User", "");
+    fileSys.Copy("Backup/Course", "");
 }
