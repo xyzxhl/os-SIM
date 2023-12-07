@@ -37,6 +37,8 @@ private:
     void AddOptions_S();
     void AddOptions_A();
 
+    void PrintOptions();
+
     // BaseRole
     void Login();
     void Exit();

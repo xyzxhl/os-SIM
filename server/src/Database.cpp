@@ -155,3 +155,13 @@ string Database::PrintScore(string courseName, string assignment, string title)
     string path = "Course/" + courseName + "/" + assignment + "/Homework/" + title + "/Score";
     return fileSys.ReadFile(path);
 }
+
+void Database::Backup()
+{
+    fileSys.Delete("Backup");
+    fileSys.CreateDirectory("Backup");
+}
+
+void Database::Recovery()
+{
+}

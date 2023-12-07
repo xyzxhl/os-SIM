@@ -29,6 +29,8 @@ public:
 
     std::vector<std::string> List(std::string path);
 
+    void Copy(std::string sourcePath, std::string targetDir);
+
     std::string ReadFile(std::string path);
     void WriteFile(std::string path, std::string content);
 

@@ -6,7 +6,7 @@ using namespace std;
 void SIM::AddOptions_S()
 {
     ADD_OPTION(PrintAssignmentTitle)
-    ADD_OPTION(DeleteUser)
+    ADD_OPTION(PrintAssignmentContent)
     ADD_OPTION(SubmitHomework)
     ADD_OPTION(PrintScore)
 }
@@ -34,7 +34,7 @@ void SIM::PrintAssignmentContent()
         SEND_ERROR_AND_END
 
     AskAndSend("assignment");
-    cout << cli->Receive();
+    cout << cli->Receive() << endl;
 
     cli->Send(ComState::TASK_END);
 }
@@ -85,7 +85,7 @@ void SIM::PrintScore()
         SEND_ERROR_AND_END
 
     AskAndSend("title");
-    cout << cli->Receive();
+    cout << cli->Receive() << endl;
 
     cli->Send(ComState::TASK_END);
 }

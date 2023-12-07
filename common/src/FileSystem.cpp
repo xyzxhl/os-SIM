@@ -222,6 +222,33 @@ vector<string> FileSystem::List(string path)
     return res;
 }
 
+void FileSystem::Copy(string sourcePath, string targetDir)
+{
+    vector<string> srcPath = ProcessDir(sourcePath);
+    int _InodeIdx = SearchParentInode(srcPath);
+    if (_InodeIdx == 0 && srcPath.size() != 1)
+        return;
+
+    int InodeIdx = GetInodeFromDir(srcPath.back(), _InodeIdx);
+    if (InodeIdx == 0)
+        return;
+
+    string newPath = targetDir + "/" + srcPath.back();
+    if (InodeMemory[InodeIdx].bIsDir)
+    {
+        CreateDirectory(newPath);
+        vector<string> list = List(sourcePath);
+        for (int i = 0; i < list.size(); i++)
+            Copy(sourcePath + "/" + list[i], newPath);
+    }
+    else
+    {
+        CreateFile(newPath);
+        string content = ReadFile(sourcePath);
+        WriteFile(newPath, content);
+    }
+}
+
 string FileSystem::ReadFile(string path)
 {
     vector<string> epath = ProcessDir(path);

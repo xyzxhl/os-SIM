@@ -13,6 +13,16 @@ SIM::SIM(FileSystem *fileSystem, Client *client)
     ADD_OPTION(PrintMember)
 }
 
+void SIM::PrintOptions()
+{
+    cout << "\nThese are all optional actions, please choose from them:" << endl;
+    for (int i = 0; i < options.size(); i++)
+    {
+        cout << options[i].first << endl;
+    }
+    cout << endl;
+}
+
 void SIM::AskAndSend(string q)
 {
     string ss;
@@ -30,15 +40,18 @@ void SIM::Interact()
     switch (role)
     {
     case Role::Administrator:
-        cout << "Successfully Login in. Welcome, administrator." << endl;
+        cout << "\nSuccessfully Login in. Welcome, administrator." << endl;
+        PrintOptions();
         break;
 
     case Role::Student:
-        cout << "Successfully Login in. Welcome, student." << endl;
+        cout << "\nSuccessfully Login in. Welcome, student." << endl;
+        PrintOptions();
         break;
 
     case Role::Teacher:
-        cout << "Successfully Login in. Welcome, teacher." << endl;
+        cout << "\nSuccessfully Login in. Welcome, teacher." << endl;
+        PrintOptions();
         break;
 
     default:
@@ -48,13 +61,6 @@ void SIM::Interact()
 
     while (online)
     {
-        cout << "Press Enter to continue.";
-        cin.get();
-        cout << "These are all optional actions, please choose from them:" << endl;
-        for (int i = 0; i < options.size(); i++)
-        {
-            cout << options[i].first << endl;
-        }
         string opt;
         cin >> opt;
         int i = 0;

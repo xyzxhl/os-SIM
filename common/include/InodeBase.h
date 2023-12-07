@@ -1,8 +1,8 @@
 #pragma once
 
-#define BLOCK_SIZE 2048
+#define BLOCK_SIZE 1024
 #define MAX_FILENAME_LENGTH 28
-#define ENTRY_NUMBER 64
+#define ENTRY_NUMBER 32
 #define BLOCK_NUMBER 1024
 #define INODE_NUMBER 1024
 
