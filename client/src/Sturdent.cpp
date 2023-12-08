@@ -9,6 +9,7 @@ void SIM::AddOptions_S()
     ADD_OPTION(PrintAssignmentContent)
     ADD_OPTION(SubmitHomework)
     ADD_OPTION(PrintScore)
+    options.push_back(make_pair("", nullptr));
 }
 
 void SIM::PrintAssignmentTitle()
@@ -18,7 +19,8 @@ void SIM::PrintAssignmentTitle()
         SEND_ERROR_AND_END
 
     AskAndSend("course name");
-    cout << cli->Receive();
+    cout << "Assignment titles:\n"
+         << cli->Receive();
 
     cli->Send(ComState::TASK_END);
 }
@@ -34,7 +36,8 @@ void SIM::PrintAssignmentContent()
         SEND_ERROR_AND_END
 
     AskAndSend("assignment");
-    cout << cli->Receive() << endl;
+    cout << "Assignment content:\n"
+         << cli->Receive() << endl;
 
     cli->Send(ComState::TASK_END);
 }
@@ -68,6 +71,8 @@ void SIM::SubmitHomework()
         SEND_ERROR_AND_END
 
     cli->Send(ComState::TASK_END);
+    cout << "Complete\n"
+         << endl;
 }
 
 void SIM::PrintScore()
@@ -85,7 +90,8 @@ void SIM::PrintScore()
         SEND_ERROR_AND_END
 
     AskAndSend("title");
-    cout << cli->Receive() << endl;
+    cout << "Score:\n"
+         << cli->Receive() << endl;
 
     cli->Send(ComState::TASK_END);
 }

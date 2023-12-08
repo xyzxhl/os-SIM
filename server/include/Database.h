@@ -2,6 +2,7 @@
 
 #include "../../common/include/FileSystem.h"
 #include "../../common/include/ComState.h"
+#include <mutex>
 
 /*
 File Structure:
@@ -67,4 +68,6 @@ public:
 
 private:
     FileSystem fileSys;
+    std::mutex userMutex;
+    std::mutex courseMutex;
 };

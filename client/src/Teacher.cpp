@@ -9,6 +9,7 @@ void SIM::AddOptions_T()
     ADD_OPTION(PrintSubmittedHomework)
     ADD_OPTION(ReceiveHomework)
     ADD_OPTION(MarkHomework)
+    options.push_back(make_pair("", nullptr));
 }
 
 void SIM::ReleaseAssignment()
@@ -30,6 +31,8 @@ void SIM::ReleaseAssignment()
         SEND_ERROR_AND_END
 
     cli->Send(ComState::TASK_END);
+    cout << "Complete\n"
+         << endl;
 }
 
 void SIM::PrintSubmittedHomework()
@@ -43,7 +46,8 @@ void SIM::PrintSubmittedHomework()
         SEND_ERROR_AND_END
 
     AskAndSend("assignment");
-    cout << cli->Receive();
+    cout << "Homework titles:\n"
+         << cli->Receive();
 
     cli->Send(ComState::TASK_END);
 }
@@ -76,6 +80,8 @@ void SIM::ReceiveHomework()
     path = path + "/" + title;
     fileSys->CreateFile(path);
     fileSys->WriteFile(path, content);
+    cout << "Complete\n"
+         << endl;
 }
 
 void SIM::MarkHomework()
@@ -101,4 +107,6 @@ void SIM::MarkHomework()
         SEND_ERROR_AND_END
 
     cli->Send(ComState::TASK_END);
+    cout << "Complete\n"
+         << endl;
 }

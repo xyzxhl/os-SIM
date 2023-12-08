@@ -11,6 +11,7 @@ SIM::SIM(FileSystem *fileSystem, Client *client)
     ADD_OPTION(Exit)
     ADD_OPTION(PrintCourse)
     ADD_OPTION(PrintMember)
+    options.push_back(make_pair("", nullptr));
 }
 
 void SIM::PrintOptions()

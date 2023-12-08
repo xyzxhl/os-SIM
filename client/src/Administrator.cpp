@@ -55,6 +55,8 @@ void SIM::AddUser()
         SEND_ERROR_AND_END
 
     cli->Send(ComState::TASK_END);
+    cout << "Complete\n"
+         << endl;
 }
 
 void SIM::DeleteUser()
@@ -68,6 +70,8 @@ void SIM::DeleteUser()
         SEND_ERROR_AND_END
 
     cli->Send(ComState::TASK_END);
+    cout << "Complete\n"
+         << endl;
 }
 
 void SIM::AddCourse()
@@ -81,6 +85,8 @@ void SIM::AddCourse()
         SEND_ERROR_AND_END
 
     cli->Send(ComState::TASK_END);
+    cout << "Complete\n"
+         << endl;
 }
 
 void SIM::DeleteCourse()
@@ -94,6 +100,8 @@ void SIM::DeleteCourse()
         SEND_ERROR_AND_END
 
     cli->Send(ComState::TASK_END);
+    cout << "Complete\n"
+         << endl;
 }
 
 void SIM::Backup()
@@ -103,6 +111,8 @@ void SIM::Backup()
         SEND_ERROR_AND_END
 
     cli->Send(ComState::TASK_END);
+    cout << "Complete\n"
+         << endl;
 }
 
 void SIM::Recovery()
@@ -112,4 +122,6 @@ void SIM::Recovery()
         SEND_ERROR_AND_END
 
     cli->Send(ComState::TASK_END);
+    cout << "Complete\n"
+         << endl;
 }
