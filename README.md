@@ -1,5 +1,5 @@
 # SCUT 未来技术学院 2023 OS课设
-linux环境下分别执行client和server中的compile.sh脚本即可编译，需要g++
+linux环境下分别执行client和server中的compile.sh脚本即可编译，需要g++(支持C++11即可)
 ## 程序结构
 ![示意图](./structure.png)
 ### common
