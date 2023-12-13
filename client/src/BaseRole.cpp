@@ -8,10 +8,14 @@ SIM::SIM(FileSystem *fileSystem, Client *client)
       cli(client),
       role(Role::Unknown)
 {
-    ADD_OPTION(Exit)
-    ADD_OPTION(PrintCourse)
-    ADD_OPTION(PrintMember)
-    options.push_back(make_pair("", nullptr));
+}
+
+void SIM::AskAndSend(string q)
+{
+    string ss;
+    cout << q << ":";
+    cin >> ss;
+    cli->Send(ss);
 }
 
 void SIM::PrintOptions()
@@ -24,12 +28,13 @@ void SIM::PrintOptions()
     cout << endl;
 }
 
-void SIM::AskAndSend(string q)
+void SIM::ResetOptions()
 {
-    string ss;
-    cout << q << ":";
-    cin >> ss;
-    cli->Send(ss);
+    options.clear();
+    ADD_OPTION(Exit)
+    ADD_OPTION(PrintCourse)
+    ADD_OPTION(PrintMember)
+    options.push_back(make_pair("", nullptr));
 }
 
 void SIM::Interact()
@@ -93,6 +98,7 @@ void SIM::Login()
 
     AskAndSend("password");
     ComState opt = ComState(cli->Receive()[0]);
+    ResetOptions();
     switch (opt)
     {
     case ComState::ADMINISTRATOR:

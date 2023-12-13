@@ -39,6 +39,8 @@ private:
 
     void PrintOptions();
 
+    void ResetOptions();
+
     // BaseRole
     void Login();
     void Exit();
