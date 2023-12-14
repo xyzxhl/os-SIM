@@ -10,33 +10,6 @@ SIM::SIM(FileSystem *fileSystem, Client *client)
 {
 }
 
-void SIM::AskAndSend(string q)
-{
-    string ss;
-    cout << q << ":";
-    cin >> ss;
-    cli->Send(ss);
-}
-
-void SIM::PrintOptions()
-{
-    cout << "\nThese are all optional actions, please choose from them:" << endl;
-    for (int i = 0; i < options.size(); i++)
-    {
-        cout << options[i].first << endl;
-    }
-    cout << endl;
-}
-
-void SIM::ResetOptions()
-{
-    options.clear();
-    ADD_OPTION(Exit)
-    ADD_OPTION(PrintCourse)
-    ADD_OPTION(PrintMember)
-    options.push_back(make_pair("", nullptr));
-}
-
 void SIM::Interact()
 {
     online = true;

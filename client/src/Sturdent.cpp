@@ -3,15 +3,6 @@
 
 using namespace std;
 
-void SIM::AddOptions_S()
-{
-    ADD_OPTION(PrintAssignmentTitle)
-    ADD_OPTION(PrintAssignmentContent)
-    ADD_OPTION(SubmitHomework)
-    ADD_OPTION(PrintScore)
-    options.push_back(make_pair("", nullptr));
-}
-
 void SIM::PrintAssignmentTitle()
 {
     cli->Send(ComState::PRINT_ASSIGNMENT_TITLE);

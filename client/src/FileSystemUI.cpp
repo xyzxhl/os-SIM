@@ -34,6 +34,7 @@ void FileSystemUI::Start()
                  << "List   -- print all directory or file names in specified directory\n"
                  << "Read   -- read the specified file\n"
                  << "Write  -- write to he specified file\n"
+                 << "Chmod  -- Change the mode of the file"
                  << endl;
         }
         else if (command == "Exit")
@@ -100,6 +101,17 @@ void FileSystemUI::Start()
             string content;
             cin >> content;
             fileSys.WriteFile(path, content);
+            cout << "Complete." << endl;
+        }
+        else if (command == "Chmod")
+        {
+            cout << "Input path:" << endl;
+            string path;
+            cin >> path;
+            cout << "Input mode:" << endl;
+            int mode;
+            cin >> mode;
+            fileSys.ChangeMode(path, mode);
             cout << "Complete." << endl;
         }
         else

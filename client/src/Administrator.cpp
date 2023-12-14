@@ -3,19 +3,6 @@
 
 using namespace std;
 
-void SIM::AddOptions_A()
-{
-    AddOptions_S();
-    AddOptions_T();
-
-    ADD_OPTION(AddUser)
-    ADD_OPTION(DeleteUser)
-    ADD_OPTION(AddCourse)
-    ADD_OPTION(DeleteCourse)
-    ADD_OPTION(Backup)
-    ADD_OPTION(Recovery)
-}
-
 void SIM::AddUser()
 {
     cli->Send(ComState::ADD_USER);

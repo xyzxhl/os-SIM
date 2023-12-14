@@ -10,6 +10,8 @@ FileSystem::FileSystem()
     bIsBlockFree.set();
     bIsInodeFree.reset(0);
     bIsBlockFree.reset(0);
+    bRead.reset();
+    bWrite.reset();
 
     memset(InodeMemory, 0, sizeof(Inode) * INODE_NUMBER);
     memset(BlockMemory, 0, sizeof(FileBlock) * BLOCK_NUMBER);
@@ -101,6 +103,8 @@ void FileSystem::DeleteFile_k2(int InodeIdx)
     memset(&BlockMemory[BlockIdx], 0, sizeof(FileBlock));
     bIsInodeFree.set(InodeIdx);
     bIsBlockFree.set(BlockIdx);
+    bRead.reset(InodeIdx);
+    bWrite.reset(InodeIdx);
 }
 
 int FileSystem::Create_k2(string path, bool bIsDir)
@@ -139,6 +143,12 @@ int FileSystem::Create_k2(string path, bool bIsDir)
 
             bIsInodeFree.reset(NewInodeIdx);
             bIsBlockFree.reset(NewBlockIdx);
+
+            if (bIsDir == false)
+            {
+                bRead.set(NewInodeIdx);
+                bWrite.set(NewInodeIdx);
+            }
 
             Inode &NewInode = InodeMemory[NewInodeIdx];
             NewInode.bIsDir = bIsDir;
@@ -257,7 +267,7 @@ string FileSystem::ReadFile(string path)
         return "";
 
     int InodeIdx = GetInodeFromDir(epath.back(), _InodeIdx);
-    if (InodeIdx == 0 || InodeMemory[InodeIdx].bIsDir)
+    if (InodeIdx == 0 || InodeMemory[InodeIdx].bIsDir || bRead[InodeIdx] == 0)
         return "";
 
     int BlockIdx = InodeMemory[InodeIdx].BlockID;
@@ -277,13 +287,35 @@ void FileSystem::WriteFile(string path, string content)
         return;
 
     int InodeIdx = GetInodeFromDir(epath.back(), _InodeIdx);
-    if (InodeIdx == 0 || InodeMemory[InodeIdx].bIsDir)
+    if (InodeIdx == 0 || InodeMemory[InodeIdx].bIsDir || bWrite[InodeIdx] == 0)
         return;
 
     int BlockIdx = InodeMemory[InodeIdx].BlockID;
     FileBlock *Block = reinterpret_cast<FileBlock *>(&BlockMemory[BlockIdx]);
 
     strcpy(Block->Content, content.data());
+}
+
+void FileSystem::ChangeMode(std::string path, int mode)
+{
+    vector<string> epath = ProcessDir(path);
+    int _InodeIdx = SearchParentInode(epath);
+    if (_InodeIdx == 0 && epath.size() != 1)
+        return;
+
+    int InodeIdx = GetInodeFromDir(epath.back(), _InodeIdx);
+    if (InodeIdx == 0 || InodeMemory[InodeIdx].bIsDir)
+        return;
+
+    if (mode & 1)
+        bWrite.set(InodeIdx);
+    else
+        bWrite.reset(InodeIdx);
+
+    if ((mode >> 1) & 1)
+        bRead.set(InodeIdx);
+    else
+        bRead.reset(InodeIdx);
 }
 
 string FileSystem::GetFileName(string path)

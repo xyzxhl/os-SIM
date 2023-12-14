@@ -33,13 +33,12 @@ private:
     // Utility
     void AskAndSend(std::string);
 
+    void PrintOptions();
+    void ResetOptions();
+
     void AddOptions_T();
     void AddOptions_S();
     void AddOptions_A();
-
-    void PrintOptions();
-
-    void ResetOptions();
 
     // BaseRole
     void Login();
